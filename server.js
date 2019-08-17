@@ -8,7 +8,7 @@ const server = express();
 
 server.use(express.json());
 
-server.get('/', (req, res) => {
+server.get('/api/projects', (req, res) => {
   project.get()
   .then(projects => {
     res.status(200).json(projects);
@@ -19,7 +19,7 @@ server.get('/', (req, res) => {
   });
 });
 
-server.post('/', (req, res) => {
+server.post('/api/projects', (req, res) => {
   project.insert(req.body)
   .then(shoutout => {
     res.status(201).json(shoutout);
@@ -30,7 +30,7 @@ server.post('/', (req, res) => {
   });
 });
 
-server.put('/:id', (req, res) => {
+server.put('/api/projects/:id', (req, res) => {
     const id = req.params.id;
     const changes = req.body;
     project.update(id, changes)
@@ -45,7 +45,7 @@ server.put('/:id', (req, res) => {
       });
 });
 
-server.delete('/:id', (req, res) => {
+server.delete('/api/projects/:id', (req, res) => {
     project.remove(req.params.id)
     .then(count => {
       if (count > 0) {
@@ -63,7 +63,7 @@ server.delete('/:id', (req, res) => {
     });
 });
 
-server.get('/:id', (req, res) => {
+server.get('/api/projects/:id', (req, res) => {
     project.getProjectActions(req.params.id)
     .then(messages => {
       res.status(200).json(messages);
@@ -77,29 +77,30 @@ server.get('/:id', (req, res) => {
     });
 });
 
-server.get('/', (req, res) => {
+server.get('/api/actions/', (req, res) => {
     action.get()
     .then(projects => {
       res.status(200).json(projects);
     })
     .catch (error => {
       console.error('\nERROR', error);
-      res.status(500).json({ error: 'Cannot retrieve the Projects' });
+      res.status(500).json({ error: 'Cannot retrieve the Actions' });
     });
   });
   
-  server.post('/', (req, res) => {
+  server.post('/api/actions/:id', (req, res) => {
+    const id = req.params.id;
     action.insert(req.body)
-    .then(shoutout => {
-      res.status(201).json(shoutout);
+    .then(actions => {
+      res.status(201).json(id, actions);
     })
     .catch (error => {
       console.error('\nERROR', error);
-      res.status(500).json({ error: 'Cannot add the Project' });
+      res.status(500).json({ error: 'Cannot add the Action' });
     });
   });
   
-  server.put('/:id', (req, res) => {
+  server.put('/api/actions/:id', (req, res) => {
       const id = req.params.id;
       const changes = req.body;
       action.update(id, changes)
@@ -109,27 +110,28 @@ server.get('/', (req, res) => {
         .catch(err => {
           console.log(err);
           res.status(500).json({
-            message: "Error updating Project"
+            message: "Error updating Action"
           });
         });
   });
   
-  server.delete('/:id', (req, res) => {
+  server.delete('/api/actions/:id', (req, res) => {
       action.remove(req.params.id)
       .then(count => {
         if (count > 0) {
-          res.status(200).json({ message: 'Project Deleted' });
+          res.status(200).json({ message: 'Action Deleted' });
         } else {
-          res.status(404).json({ message: 'The project could not be found' });
+          res.status(404).json({ message: 'The action could not be found' });
         }
       })
       .catch(error => {
         // log error to server
         console.log(error);
         res.status(500).json({
-          message: 'Error removing this project',
+          message: 'Error removing this action',
         });
       });
   });
+  
 
 module.exports = server;
