@@ -88,11 +88,11 @@ server.get('/api/actions/', (req, res) => {
     });
   });
   
-  server.post('/api/actions/:id', (req, res) => {
+  server.post('/api/actions/:id', validateAction, (req, res) => {
     const id = req.params.id;
     action.insert(req.body)
     .then(actions => {
-      res.status(201).json(id, actions);
+      res.status(201).json({id, actions});
     })
     .catch (error => {
       console.error('\nERROR', error);
@@ -133,5 +133,25 @@ server.get('/api/actions/', (req, res) => {
       });
   });
   
+  function validateAction(req, res, next) {
+    
+    project
+      .get(req.body.project_id)
+      .then(projectID => {
+        if (projectID != null) {
+          next();
+        } else {
+          res.status(404).json({
+            message: "That project could notbe found!"
+          });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({
+          message: "Request Error"
+        });
+      });
+  }
 
 module.exports = server;
