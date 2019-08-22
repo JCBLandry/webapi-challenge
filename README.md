@@ -26,13 +26,23 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ] Mention two parts of Express that you learned about this week.
 
+    Express.JSON and Server.use
+
 - [ ] Describe Middleware?
+
+    Middleware is a function that is done before a request is made, typically used to make sure the right data is being sent or to check to see if a user is signed in before proceeding with an action.
 
 - [ ] Describe a Resource?
 
+    A resource is just data contained in the database.
+
 - [ ] What can the API return to help clients know if a request was successful?
 
+    A 200 status code is typically sent
+
 - [ ] How can we partition our application into sub-applications?
+
+    We can use express router
 
 ## Project Setup
 
